@@ -1,0 +1,191 @@
+﻿@* @using Project_1.Areas.Items.Controllers
+@using Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Item>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<link rel="stylesheet" href="~/css/StyleSheet.css" />
+<div class="container p-3">
+
+    <partial name="_Notification" />
+
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Items View</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-area="Items" asp-controller="Items" asp-action="AddNewItem" class="btn btn-primary">
+                <i class="bi bi-plus"></i> &nbsp; Add New Item
+            </a>
+        </div>
+    </div>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Item Name</th>
+                <th scope="col">Item Price</th>
+                <th scope="col">Category</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="table-primary">
+                    <td scope="row" width="50%">@item.Name</td>
+                    <td width="30%">@item.Price</td>
+                    <td width="30%">@item.Category.Name</td>
+                    <td>
+                        <a asp-area="Items" asp-controller="Items" asp-action="EditItem" asp-route-id="@item.Id" class="btn btn-sm btn-success">
+                            <i class="bi bi-pencil"></i> Update
+                        </a>
+                        &nbsp;
+                        <a asp-area="Items" asp-controller="Items" asp-action="DeleteItem" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash3"></i> Delete
+                        </a>
+                        &nbsp;
+                        <a asp-area="Items" asp-controller="Items" asp-action="ViewItem" asp-route-id="@item.Id" class="btn btn-sm btn-warning">
+                            <i class="bi bi-trash3"></i> View
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+ *@
+
+@using Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model IEnumerable<Item>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<link rel="stylesheet" href="~/css/StyleSheet.css" />
+<div class="container p-3">
+
+    <partial name="_Notification" />
+
+    <div class="row pt-4">
+        <div class="col-6">
+            <h2 class="text-primary">Items View</h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-area="Items" asp-controller="Items" asp-action="AddNewItem" class="btn btn-primary">
+                <i class="bi bi-plus"></i> &nbsp; Add New Item
+            </a>
+        </div>
+    </div>
+
+    <form method="get" action="@Url.Action("Index")" class="form-inline mb-3">
+        <div class="form-group mr-3">
+            <!-- Label for sort column dropdown -->
+            <label for="sortColumn" class="mr-2 font-weight-bold">Sort By:</label>
+            <!-- Dropdown to select column for sorting -->
+            <select name="sortColumn" id="sortColumn" class="form-control">
+                <option value="Id">Id</option>
+                <option value="Name">Name</option>
+                <option value="Price">Price</option>
+                <option value="CreatedDate">Created Date</option>
+                <!-- Add more options based on the available columns -->
+            </select>
+        </div>
+
+        <div class="form-group mr-3">
+            <!-- Label for sorting direction -->
+            <label class="mr-2 font-weight-bold">Order:</label>
+            <!-- Radio buttons to select the sorting direction -->
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="ascending" name="isAscending" value="true" class="custom-control-input" checked>
+                <label class="custom-control-label" for="ascending">Ascending</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" id="descending" name="isAscending" value="false" class="custom-control-input">
+                <label class="custom-control-label" for="descending">Descending</label>
+            </div>
+        </div>
+
+        <!-- Submit button -->
+        <button type="submit" class="btn btn-primary">Sort</button>
+    </form>
+
+
+    <!-- Filtering Form -->
+    <form method="get" asp-action="Index" class="row g-3 mt-3">
+        <div class="col-md-4">
+            <label for="searchtext" class="form-label">Search by Item Name</label>
+            <input type="text" name="searchtext" class="form-control" value="@ViewData["searchText"]" placeholder="Enter item name..." />
+        </div>
+        <div class="col-md-2">
+            <label for="price" class="form-label">Price</label>
+            <input type="number" name="price" class="form-control" value="@ViewData["price"]" step="0.01" placeholder="Enter price..." />
+        </div>
+        <div class="col-md-3">
+            <label for="CategoryId" class="form-label">Category</label>
+            <select name="CategoryId" class="form-select">
+                <option value="">Select Category</option>
+                @foreach (var category in ViewData["Categories"] as List<SelectListItem>)
+                {
+                    <option value="@category.Value" selected="@category.Selected">@category.Text</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3 align-self-end">
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <a asp-action="Index" class="btn btn-secondary">Reset</a>
+        </div>
+    </form>
+
+    <table class="table table-hover mt-4">
+        <thead>
+            <tr>
+                <th scope="col">Item Name</th>
+                <th scope="col">Item Price</th>
+                <th scope="col">Category</th>
+                <th scope="col">Image</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col">Buttons</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="table-primary">
+                    <td scope="row" width="50%">@item.Name</td>
+                    <td width="30%">@item.Price</td>
+                    <td width="30%">
+                        @(item.Category != null ? item.Category.Name : "No Category")
+                    </td>
+                    <td width="50%">
+                        <img src="@item.ImagePath" width="70px"/>
+                    </td>
+                    <td width="30%">
+                       
+                    </td>
+                    <td width="30%">
+
+                    </td>
+                    <td>
+                        <a asp-area="Items" asp-controller="Items" asp-action="EditItem" asp-route-id="@item.Id" class="btn btn-sm btn-success">
+                            <i class="bi bi-pencil"></i> Update
+                        </a>
+                        &nbsp;
+                        <a asp-area="Items" asp-controller="Items" asp-action="DeleteItem" asp-route-id="@item.Id" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash3"></i> Delete
+                        </a>
+                        &nbsp;
+                        <a asp-area="Items" asp-controller="Items" asp-action="ViewItem" asp-route-id="@item.Id" class="btn btn-sm btn-warning">
+                            <i class="bi bi-eye"></i> View
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

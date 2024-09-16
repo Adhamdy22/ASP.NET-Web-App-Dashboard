@@ -1,0 +1,33 @@
+﻿<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
+
+@if (TempData["successData"] != null)
+{
+    <h3 style="color:brown;">
+        @TempData["successData"]
+    </h3>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            toastr.success('@TempData["successData"]', 'Congratulations');
+        });
+    </script>
+}
+
+@if (TempData["ErrorData"] != null)
+{
+    <h3 style="color:brown;">
+        @TempData["ErrorData"]
+    </h3>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            toastr.error('@TempData["ErrorData"]', 'Try Again');
+        });
+    </script>
+}
+<script type="text/javascript">
+    console.log('TempData["successData"] = @TempData["successData"]');
+    console.log('TempData["ErrorData"] = @TempData["ErrorData"]');
+</script>

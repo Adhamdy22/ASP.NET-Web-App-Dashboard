@@ -1,0 +1,55 @@
+﻿
+@using ViewModel.Items
+@model AddItemViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "DeleteItem";
+}
+<link rel="stylesheet" href="~/css/StyleSheet.css" />
+<form asp-action="DeleteItem" method="post">
+    @Html.AntiForgeryToken() <!-- Include Anti-Forgery Token -->
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">@Model.Name</h2>
+            <hr />
+        </div>
+        <div asp-validation-summary="All"></div>
+        <div class="mb-3">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" readonly />
+        </div>
+        <div class="mb-3">
+            <label asp-for="Price" class="form-label"></label>
+            <input asp-for="Price" class="form-control" readonly />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="CategoryId"></label>
+            <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryList" readonly>
+             
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ItemImage" class="form-label"></label>
+            <br />
+            <img src="@Model.ImagePath" width="200px" alt="Item Image" />
+        </div>
+        <br />
+        <a asp-area="Items" asp-action="Index" asp-controller="Home" class="btn btn-secondary" style="width:150px">
+            Back to Items
+        </a>
+        <button type="submit" class="btn btn-danger btn-sm" style="width:150px"
+                onclick="return confirmDelete()">
+            Delete
+        </button>
+
+        
+    </div>
+</form>
+
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this item? This action cannot be undone.");
+    }
+</script>

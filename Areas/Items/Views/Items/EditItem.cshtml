@@ -1,0 +1,70 @@
+﻿@using ViewModel.Items
+@model AddItemViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "EditItem";
+}
+<link rel="stylesheet" href="~/css/StyleSheet.css" />
+<form method="post" asp-action="EditItem" enctype="multipart/form-data"> <!-- Add enctype attribute -->
+
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">Edit Item</h2>
+            <hr />
+        </div>
+        <div asp-validation-summary="All"> </div>
+
+        <!-- Item Name -->
+        <div class="mb-3">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <!-- Item Price -->
+        <div class="mb-3">
+            <label asp-for="Price"></label>
+            <input asp-for="Price" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <!-- Item Category -->
+        <div class="mb-3">
+            <label asp-for="CategoryId" class="form-label"></label>
+            <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryList">
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+
+        <!-- Existing Image Display -->
+        <div class="mb-3">
+            <label>Current Item Image</label>
+            <br />
+            @if (!string.IsNullOrEmpty(Model.ImagePath)) 
+            {
+                <img src="@Model.ImagePath" alt="Item Image" width="200px" />
+            }
+            else
+            {
+                <p>No image available.</p>
+            }
+        </div>
+
+        <!-- New Image Upload -->
+        <div class="mb-3">
+            <label asp-for="ItemImage"></label>
+            <input asp-for="ItemImage" type="file" class="form-control" />
+            <span asp-validation-for="ItemImage" class="text-danger"></span>
+        </div>
+
+        <!-- Save and Back Buttons -->
+        <button type="submit" class="btn btn-primary" style="width:150px">Save</button>
+        <a asp-area="Items" asp-action="Index" asp-controller="Home" class="btn btn-secondary" style="width:150px">
+            Back to Items
+        </a>
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"></partial>
+}

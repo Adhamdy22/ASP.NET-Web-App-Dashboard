@@ -1,0 +1,43 @@
+﻿
+@using ViewModel.Items;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model AddItemViewModel
+@{
+    ViewData["Title"] = "ViewItem";
+}
+<link rel="stylesheet" href="~/css/StyleSheet.css" />
+<form method="get" asp-action="EditView">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">@Model.Name</h2>
+            <hr />
+        </div>
+        <div asp-validation-summary="All"> </div>
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" readonly />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Price" class="form-label"></label>
+            <input asp-for="Price" class="form-control" readonly />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CategoryId" class="form-label"></label>
+            <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryList" readonly>
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ItemImage" class="form-label"></label>
+            <br />
+            <img src="@Model.ImagePath" width="200px" alt="Item Image" />
+        </div>
+        <a asp-area="Items" asp-action="Index" asp-controller="Home" class="btn btn-secondary" style="width:150px">
+            Back to Items
+        </a>
+    </div>
+</form>
+

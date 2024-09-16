@@ -1,0 +1,214 @@
+﻿@* @using ViewModel.Items
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model AddItemViewModel
+
+@{
+    ViewData["Title"] = "Add New Item";
+}
+<link rel="stylesheet" href="~/css/StyleSheet.css" />
+
+<div class="container mt-5">
+    <div class="border p-4 bg-light">
+        <div class="row">
+            <h2 class="text-primary">Add New Item</h2>
+            <hr />
+        </div>
+
+        <!-- Validation Summary -->
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <form asp-action="AddNewItem" method="post" enctype="multipart/form-data">
+            <!-- Name -->
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <!-- Price -->
+            <div class="mb-3">
+                <label asp-for="Price" class="form-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <!-- Category -->
+            <div class="mb-3">
+                <label asp-for="CategoryId" class="form-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryList"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            <!-- Image Upload -->
+            <div class="mb-3">
+                <label asp-for="ImagePath" class="form-label"></label>
+                <input type="file" id="fileInput" class="form-control" accept="image/*" />
+                <small class="form-text text-muted">Supported formats: JPG, PNG, GIF</small>
+                <img id="myImg" class="mt-3" height="200" alt="Selected image preview" style="display: none;" />
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-between mt-4">
+                <button type="submit" class="btn btn-primary" style="width:150px">Save</button>
+                <a asp-area="Items" asp-action="Index" asp-controller="Home" class="btn btn-secondary" style="width:150px">
+                    Back to Items
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Validation Scripts -->
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            var file = event.target.files[0];
+            if (file) {
+                // Validate file type
+                var allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Only JPG, PNG, and GIF files are allowed.');
+                    return;
+                }
+
+                // Validate file size (optional, example: max 2MB)
+                var maxSize = 2 * 1024 * 1024; // 2MB
+                if (file.size > maxSize) {
+                    alert('File size must not exceed 2MB.');
+                    return;
+                }
+
+                // File preview
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var myImg = document.getElementById('myImg');
+                    myImg.src = reader.result;
+                    myImg.style.display = 'block'; // Show image preview
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+}
+ *@
+
+@using ViewModel.Items
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model AddItemViewModel
+
+@{
+    ViewData["Title"] = "Add New Item";
+}
+<link rel="stylesheet" href="~/css/StyleSheet.css" />
+
+<div class="container mt-5">
+    <div class="border p-4 bg-light">
+        <div class="row">
+            <h2 class="text-primary">Add New Item</h2>
+            <hr />
+        </div>
+
+        <!-- Validation Summary -->
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <form asp-action="AddNewItem" method="post" enctype="multipart/form-data">
+            <!-- Name -->
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <!-- Price -->
+            <div class="mb-3">
+                <label asp-for="Price" class="form-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <!-- Category -->
+            <div class="mb-3">
+                <label asp-for="CategoryId" class="form-label"></label>
+                <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryList"></select>
+                <span asp-validation-for="CategoryId" class="text-danger"></span>
+            </div>
+
+            <!-- Image Upload -->
+            <div class="mb-3">
+                <label asp-for="ItemImage" class="form-label"></label>
+                <input type="file" id="fileInput" asp-for="ItemImage" class="form-control" accept="image/*" />
+                <small class="form-text text-muted">Supported formats: JPG, PNG, GIF</small>
+
+                <!-- Image Preview Section -->
+                <div class="mt-3">
+                    <img id="myImg" height="200" style="display:none;" alt="Selected image preview" />
+                    <div id="removeImageSection" style="display:none;">
+                        <button type="button" class="btn btn-danger mt-2" id="removeImageBtn">Remove Image</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-between mt-4">
+                <button type="submit" class="btn btn-primary" style="width:150px">Save</button>
+                <a asp-area="Items" asp-action="Index" asp-controller="Home" class="btn btn-secondary" style="width:150px">
+                    Back to Items
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <!-- Validation Scripts -->
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        document.getElementById('fileInput').addEventListener('change', function (event) {
+            var file = event.target.files[0];
+            if (file) {
+                // Validate file type
+                var allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+                if (!allowedTypes.includes(file.type)) {
+                    alert('Only JPG, PNG, and GIF files are allowed.');
+                    return;
+                }
+
+                // Validate file size (optional, example: max 2MB)
+                var maxSize = 2 * 1024 * 1024; // 2MB
+                if (file.size > maxSize) {
+                    alert('File size must not exceed 2MB.');
+                    return;
+                }
+
+                // File preview
+                var reader = new FileReader();
+                reader.onload = function () {
+                    var myImg = document.getElementById('myImg');
+                    myImg.src = reader.result;
+                    myImg.style.display = 'block'; // Show image preview
+
+                    // Show remove button
+                    document.getElementById('removeImageSection').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Remove Image Functionality
+        document.getElementById('removeImageBtn').addEventListener('click', function () {
+            var myImg = document.getElementById('myImg');
+            var fileInput = document.getElementById('fileInput');
+
+            // Clear the file input
+            fileInput.value = null;
+            myImg.style.display = 'none'; // Hide the image preview
+            myImg.src = ''; // Reset the src of the image
+
+            // Hide remove button
+            document.getElementById('removeImageSection').style.display = 'none';
+        });
+    </script>
+}

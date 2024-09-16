@@ -1,0 +1,25 @@
+﻿@using Models;
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model Category
+@{
+    ViewData["Title"] = "ViewCategory";
+}
+<link rel="stylesheet" href="~/css/StyleSheet.css" />
+<form method="get" asp-action="ViewCategory">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-primary">@Model.Name</h2>
+            <hr />
+        </div>
+        <div asp-validation-summary="All"> </div>
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" readonly />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <a asp-area="Categories" asp-action="Index" asp-controller="Home" class="btn btn-secondary" style="width:150px">
+            Back to Items
+        </a>
+    </div>
+</form>
+
